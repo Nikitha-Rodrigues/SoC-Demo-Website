@@ -8,7 +8,7 @@ import pymysql
 flows = []
 
 with open(
-    "C:/Users/Nikitha/Downloads/5th_sem/aiml_dbms_lab/CapturePackets/flow_jsonl.jsonl",
+    "", # ADD PATH TO flows_jsonl.jsonl here
     "r"
 ) as f:
     for line in f:
@@ -20,12 +20,12 @@ if not flows:
     print("No flows found in flows_jsonl.jsonl")
 else:
     # -----------------------
-    # 2. Connect to database
+    # 2. Connect to database - ADD DATABASE CREDENTIALS HERE
     # -----------------------
     db = pymysql.connect(
-        host="localhost",
-        user="root",
-        password="Qplb@1716122",
+        host="",
+        user="",
+        password="",
         database="COVERT_CHANNEL"
     )
 
@@ -176,3 +176,4 @@ else:
     db.close()
 
     print(f"Inserted/updated {len(flows)} flows successfully!")
+
