@@ -20,5 +20,6 @@ create table packet (PacketID int primary key auto_increment, SourceIP varchar(1
 
 ### Insertion of data into MySQL tables
 
-1. change the path in the files inside 'insert database files' folder and use them to populate the packet, attack and flow table
+1. change the path in the files inside 'insert database files' folder and enter database credentials in each file - use them to populate the packet, attack and flow table
+   
 
