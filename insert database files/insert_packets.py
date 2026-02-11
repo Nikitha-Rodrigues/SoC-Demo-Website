@@ -5,12 +5,13 @@ import pymysql
 # CONFIGURATION
 # =========================================================
 
-PACKET_JSONL_PATH = ("C:/Users/Nikitha/Downloads/5th_sem/aiml_dbms_lab/CapturePackets/CaptureUnseenAttacks/correct_mixed_test_packets.jsonl")
-FLOW_JSONL_PATH = ("C:/Users/Nikitha/Downloads/5th_sem/aiml_dbms_lab/CapturePackets/flow_jsonl.jsonl")
+PACKET_JSONL_PATH = ("") #ADD PATH TO correct_mixed_test_packets.jsonl HERE
+FLOW_JSONL_PATH = ("") #ADD PATH TO flows_jsonl.jsonl here
+#ADD DATABASE CREDENTIALS HERE
 DB_CONFIG = {
-    "host": "localhost",
-    "user": "root",
-    "password": "Qplb@1716122",
+    "host": "",
+    "user": "",
+    "password": "",
     "database": "COVERT_CHANNEL"
 }
 
@@ -202,7 +203,7 @@ def insert_packets():
     cursor.close()
     db.close()
 
-    print(f"✅ Successfully inserted {inserted} packets")
+    print(f"Successfully inserted {inserted} packets")
 
 # =========================================================
 # ENTRY POINT
