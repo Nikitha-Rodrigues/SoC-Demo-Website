@@ -1,5 +1,5 @@
 # SoC Demo Website Instructions #
-### Creation of MySQL database called covert_channel###
+### Creation of MySQL database called covert_channel
 
 1. Creation of flow table
 
@@ -14,6 +14,11 @@ create table packet (PacketID int primary key auto_increment, SourceIP varchar(1
    1. create table attack ( AttackID int primary key, AttackName varchar(50) not null, StartTimestamp double not null, EndTImestamp double not null);
    2. create table attack_packet (AttackID int, PacketID int, primary key(AttackID,PacketID), foreign key(AttackID) references attack(AttackID), foreign key(PacketID) references packet(PacketID));
    3. create table attack_vulnerability (AttackID int, VulnerabilityID int, primary key(AttackID, VulnerabilityID));
-   4. create table attack_modification ( ModificationID int auto_increment primary key, AttackID int, PacketID int, ModifiedField varchar(50) not null, OriginalValue varchar(100), ModiifedValue varchar(100), constraint FK_AttackID foreign key (AttackID) references attack(AttackID) on delete cascade, constraint Attack_PacketID foreign key (PacketID) references packet(PacketID) on delete cascade); 
+   4. create table attack_modification ( ModificationID int auto_increment primary key, AttackID int, PacketID int, ModifiedField varchar(50) not null, OriginalValue varchar(100), ModiifedValue varchar(100), constraint FK_AttackID foreign key (AttackID) references attack(AttackID) on delete cascade, constraint Attack_PacketID foreign key (PacketID) references packet(PacketID) on delete cascade);
 
+4. create users(username VARCHAR, password VARCHAR);
+
+### Insertion of data into MySQL tables
+
+1. change the path in the files inside 'insert database files' folder and use them to populate the packet, attack and flow table
 
