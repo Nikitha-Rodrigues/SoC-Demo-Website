@@ -2,15 +2,15 @@ import json
 import pymysql
 from collections import defaultdict
 
-ATTACK_JSONL = "C:/Users/Nikitha/Downloads/5th_sem/aiml_dbms_lab/SendPackets/attck_jsonl.jsonl"
+ATTACK_JSONL = "" #ADD PATH TO attck_jsonl.jsonl here
 
 # -----------------------
-# DB connection
+# DB CONNECTION - ENTER YOUR DATABASE CREDENTIALS HERE
 # -----------------------
 db = pymysql.connect(
-    host="localhost",
-    user="root",
-    password="Qplb@1716122",
+    host="",
+    user="",
+    password="",
     database="COVERT_CHANNEL",
     autocommit=False
 )
@@ -125,3 +125,4 @@ cursor.close()
 db.close()
 
 print("All attacks inserted successfully.")
+
