@@ -1,3 +1,29 @@
+# SoC Demo Website Instructions #
+### Creation of MySQL database called covert_channel
+
+1. Creation of flow table
+
+CREATE TABLE flow (FlowID INT PRIMARY KEY, SourceIP VARCHAR(15) NOT NULL, DestinationIP VARCHAR(15) NOT NULL, SourcePort INT UNSIGNED NOT NULL, DestinationPort INT UNSIGNED NOT NULL, Protocol VARCHAR(10) NOT NULL, FlowStartTime DOUBLE NOT NULL, FlowEndTime DOUBLE NOT NULL, FlowDuration DOUBLE NOT NULL, TotalFwdPackets INT UNSIGNED NOT NULL, TotalBwdPackets INT UNSIGNED NOT NULL, TotalLengthFwdPackets INT UNSIGNED NOT NULL, FwdPacketLengthMean DOUBLE NOT NULL, FwdPacketLengthStd DOUBLE NOT NULL, FwdPacketLengthMin INT UNSIGNED NOT NULL, FwdPacketLengthMax INT UNSIGNED NOT NULL, TotalLengthBwdPackets INT UNSIGNED NOT NULL, BwdPacketLengthMean DOUBLE NOT NULL, BwdPacketLengthStd DOUBLE NOT NULL, BwdPacketLengthMin INT UNSIGNED NOT NULL, BwdPacketLengthMax INT UNSIGNED NOT NULL, FlowBytesPerSec DOUBLE NOT NULL, FlowPktsPerSec DOUBLE NOT NULL, FwdPktsPerSec DOUBLE NOT NULL, BwdPktsPerSec DOUBLE NOT NULL, FwdAvgBytesPerBulk DOUBLE NOT NULL, FwdAvgPktsPerBulk DOUBLE NOT NULL, BwdAvgBytesPerBulk DOUBLE NOT NULL, BwdAvgPktsPerBulk DOUBLE NOT NULL, FlowIATMean DOUBLE NOT NULL, FlowIATStd DOUBLE NOT NULL, FlowIATMin DOUBLE NOT NULL, FlowIATMax DOUBLE NOT NULL, FwdIATMean DOUBLE NOT NULL, FwdIATStd DOUBLE NOT NULL, FwdIATMin DOUBLE NOT NULL, FwdIATMax DOUBLE NOT NULL, FwdIATTotal DOUBLE NOT NULL, BwdIATMean DOUBLE NOT NULL, BwdIATStd DOUBLE NOT NULL, BwdIATMin DOUBLE NOT NULL, BwdIATMax DOUBLE NOT NULL, BwdIATTotal DOUBLE NOT NULL, FINFlagCount INT UNSIGNED NOT NULL, SYNFlagCount INT UNSIGNED NOT NULL, RSTFlagCount INT UNSIGNED NOT NULL, PSHFlagCount INT UNSIGNED NOT NULL, ACKFlagCount INT UNSIGNED NOT NULL, URGFlagCount INT UNSIGNED NOT NULL, Label varchar(20) not null);
+  
+2. Creation of packet table
+
+create table packet (PacketID int primary key auto_increment, SourceIP varchar(15) not null, DestinationIP varchar(15) not null, SourcePort int unsigned not null, DestinationPort int unsigned not null, Protocol varchar(10) not null, PacketLength int unsigned not null, TCPHeaderLength int unsigned not null, TCPPayloadLength int unsigned not null, UDPLength int unsigned not null, UDPPayloadLength int unsigned not null, IPHeaderLength int unsigned not null,IPTotalLength int unsigned not null, EthernetHeaderLength int unsigned not null, Timestamp double not null, TCPSYN int unsigned not null, TCPACK int unsigned not null, TCPFIN int unsigned not null, TCPRST int unsigned not null, TCPPSH int unsigned not null, TCPURG int unsigned not null, TCPDataofs int unsigned not null, TCPWindow int unsigned not null, TCPReserved int unsigned not null, Seq int unsigned not null, Ack int unsigned not null, IPID int unsigned not null, IPTTL int unsigned not null, IAT double not null, label varchar(15) not null, FlowID int, constraint FK_FlowID foreign key(FlowID) references flow(FlowID) on delete cascade);
+
+3. Creation of 4 attack tables (attack, attack_packet, attack_vulnerability and attack_modification)
+
+   1. create table attack ( AttackID int primary key, AttackName varchar(50) not null, StartTimestamp double not null, EndTImestamp double not null);
+   2. create table attack_packet (AttackID int, PacketID int, primary key(AttackID,PacketID), foreign key(AttackID) references attack(AttackID), foreign key(PacketID) references packet(PacketID));
+   3. create table attack_vulnerability (AttackID int, VulnerabilityID int, primary key(AttackID, VulnerabilityID));
+   4. create table attack_modification ( ModificationID int auto_increment primary key, AttackID int, PacketID int, ModifiedField varchar(50) not null, OriginalValue varchar(100), ModiifedValue varchar(100), constraint FK_AttackID foreign key (AttackID) references attack(AttackID) on delete cascade, constraint Attack_PacketID foreign key (PacketID) references packet(PacketID) on delete cascade);
+
+4. create users(username VARCHAR, password VARCHAR);
+
+### Insertion of data into MySQL tables
+
+1. change the path in the files inside 'insert database files' folder and enter database credentials in each file - use them to populate the packet, attack and flow table
+   
+
+
 # DBMSWebsite - SOC Dashboard
 
 This is a Next.js (App Router) + TypeScript + Tailwind CSS demo SOC Dashboard that connects to MySQL and MongoDB.
