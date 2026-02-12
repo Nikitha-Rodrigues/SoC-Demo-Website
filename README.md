@@ -1,5 +1,5 @@
 # SoC Demo Website Instructions #
-### Creation of MySQL database called covert_channel
+## Creation of MySQL database called covert_channel
 
 1. Creation of flow table
 
@@ -18,8 +18,91 @@ create table packet (PacketID int primary key auto_increment, SourceIP varchar(1
 
 4. create users(username VARCHAR, password VARCHAR);
 
-### Insertion of data into MySQL tables
+## Insertion of data into MySQL tables
 
 1. change the path in the files inside 'insert database files' folder and enter database credentials in each file - use them to populate the packet, attack and flow table
-   
 
+## Creation of MongoDB database
+
+Use mongodb on mongosh CLI.
+Commands: 
+1. use covert_channel
+
+2. db.vulnerabilities.insertOne({ _id: 1, VulnerabilityID: 1, VulnerabilityName: "Storage-Based Covert Channels", Description: "A covert storage channel transfers information through the setting of bits by one program and the reading of those bits by another. What distinguishes this case from that of ordinary operation is that the bits are used to convey encoded information. Covert storage channels occur when out-of-band data is stored in messages for the purpose of memory reuse. Covert channels are frequently classified as either storage or timing channels. Examples would include using a file intended to hold only audit information to convey user passwords--using the name of a file or perhaps status bits associated with it that can be read by all users to signal the contents of the file. Steganography, concealing information in such a manner that no one but the intended recipient knows of the existence of the message, is a good example of a covert storage channel.", CWECategory: 'CWE-515: Covert Storage Channel', severity: 'High', severity_score: 7.5, impact: 'Covert storage channels may provide attackers with important information about the system in question. If these messages or packets are sent with unnecessary data contained within, it may tip off malicious listeners as to the process that created the message. With this information, attackers may learn any number of things, including the hardware platform, operating system, or algorithms used by the sender. This information can be of significant value to the user in launching further attacks.', mitigations: ['Ensure that all reserved fields are set to zero before messages are sent and that no unnecessary information is included.']})
+
+3.  db.vulnerabilities.insertOne({ _id: 2, VulnerabilityID: 2, VulnerabilityName: "Covert Channels", Description: "A covert channel is a path that can be used to transfer information in a way not intended by covert_channel> db.vulnerabilities.insertOne({ _id: 2, VulnerabilityID: 2, VulnerabilityName: "Covert Channels", Description: "A covert channel is a path that can be used to transfer information in a way not intended by the systcovert_channel> db.vulnerabilities.insertOne({ _id: 2, VulnerabilityID: 2, VulnerabilityName: "Covert Channels", Description: "A covert channel is a patcovert_channel> db.vulnerabilities.insertOne({ _id: 2, VulnerabilityID: 2, VulnerabilityName: "Covert Channels", Description: "A covert channel is a patcovert_channel> db.vulnerabilities.insertOne({ _id: 2, VulnerabilityID: 2, VulnerabilityName: "Covert Channels", Description: "A covert channel is a path that can be used to transfer information in a way not intended by the system's designers. Typically the system has not given authorization for the transmission and has no knowledge of its occurrence.", CWECategory: 'CWE-514: Covert Channel', severity: 'High', severity_score: 7.5, impact: 'An attacker can use a covert channel to leak information to an unauthorized actor. This can include sensitive data, intellectual property, or even cryptographic keys. The primary danger of a covert channel is that the communication mechanism is not an intended resource and thus bypasses typical access controls and monitoring systems, making it difficult to detect', mitigations: ['Introduce random delays or noise into system processes to mask the timing variations that an attacker might use to infer secret data.','Add dummy data to network or storage streams to ensure that the volume and frequency of communication remain constant, regardless of the actual data being sent.']})
+
+
+# DBMSWebsite - SOC Dashboard
+
+This is a Next.js (App Router) + TypeScript + Tailwind CSS demo SOC Dashboard that connects to MySQL and MongoDB.
+
+Quick start
+
+1. Install dependencies
+
+```bash
+cd DBMSWebsite
+npm install
+```
+
+2. Create a `.env` file based on `.env.example` and fill in values for MySQL and MongoDB.
+
+3. Run dev server
+
+```bash
+npm run dev
+```
+
+Login
+
+- Visit `http://localhost:3000/login` and sign in. On success you'll be redirected to `/dashboard/attack`.
+
+Debugging login issues
+
+If login fails, first verify your credentials are correct:
+
+```bash
+node scripts/testLogin.js admin mypassword123
+```
+
+This will:
+1. Connect to your MySQL database
+2. Look up the user
+3. Test the bcrypt password comparison
+4. Tell you if credentials are valid
+
+If the script says the password doesn't match, create a fresh user:
+
+```bash
+node scripts/addUser.js admin newpassword123
+```
+
+Then try logging in with the new password.
+
+Database notes
+
+- MySQL should have tables: `users(username VARCHAR, password VARCHAR)`, `attack`, `flow`, `packet`.
+- To add a user, run the helper script:
+
+```bash
+node scripts/addUser.js admin mypassword123
+```
+
+This hashes the password with bcrypt and inserts it into your users table. You'll need `.env` configured first.
+
+API routes
+
+- `POST /api/login` - login (sets HTTP-only cookie)
+- `DELETE /api/login` - logout
+- `POST /api/attack` - actions for attacks
+- `POST /api/flow` - actions for flows
+- `POST /api/packet` - actions for packets
+- `POST /api/vulnerability` - queries MongoDB vulnerabilities
+
+Security
+
+- All SQL uses parameterized queries via `mysql2` to avoid SQL injection.
+- DB credentials are read from environment variables only.
+- Authentication uses localStorage to store a simple auth flag after successful login.
+- Dashboard routes are protected with a client-side ProtectedRoute component.
